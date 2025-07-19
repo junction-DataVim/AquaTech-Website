@@ -43,63 +43,57 @@ import {
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { set } from "date-fns"
 
 // ============= DATABASE VARIABLES - REPLACE WITH YOUR API CALLS =============
 // Navigation items - can be fetched from database
-const navigationItems = [
-  { id: 1, name: "Home", href: "/", icon: Home },
-  { id: 2, name: "About Us", href: "/about", icon: Users },
-  { id: 3, name: "Services", href: "/services", icon: Briefcase },
-  { id: 4, name: "Contact Us", href: "/contact", icon: Phone },
+const navigationItems: any = [
+  { id: 1, name: "الرئيسية", href: "/", icon: Home },
+  { id: 2, name: "من نحن", href: "/about", icon: Users },
+  { id: 3, name: "الخدمات", href: "/services", icon: Briefcase },
+  { id: 4, name: "اتصل بنا", href: "/contact", icon: Phone },
 ]
 
 // Sidebar items - can be fetched from database
-const sidebarItems = [
-  { id: 1, name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { id: 2, name: "Pools Dashboard", href: "/pools", icon: Droplets },
-  { id: 3, name: "History", href: "/history", icon: History },
-  { id: 4, name: "Recommendations", href: "/recommendations", icon: Star },
-  { id: 5, name: "Bacteria Testing", href: "/bacteria", icon: Microscope },
-  { id: 6, name: "Settings", href: "/settings", icon: Settings },
-  { id: 7, name: "Profile", href: "/profile", icon: User },
+const sidebarItems: any = [
+  { id: 1, name: "لوحة القيادة", href: "/dashboard", icon: LayoutDashboard },
+  { id: 2, name: "إدارة الأحواض", href: "/pools", icon: Droplets },
+  { id: 3, name: "التاريخ", href: "/history", icon: History },
+  { id: 4, name: "التوصيات", href: "/recommendations", icon: Star },
+  { id: 5, name: "فحص البكتيريا", href: "/bacteria", icon: Microscope },
+  { id: 6, name: "الإعدادات", href: "/settings", icon: Settings },
+  { id: 7, name: "الملف الشخصي", href: "/profile", icon: User },
 ]
 
 // User profile - fetch from your authentication system
-const userProfile = {
+const userProfile: any = {
   id: 1,
-  name: "John Doe",
-  email: "john.doe@example.com",
+  name: "أحمد محمد",
+  email: "ahmed.mohamed@example.com",
   avatar: "/placeholder.svg?height=40&width=40",
 }
 
-// Pools data - fetch from database: SELECT * FROM pools
-const poolsData = [
-  { id: 1, name: "Main Pool", location: "Backyard", status: "active", species: "Salmon" },
-  { id: 2, name: "Spa Pool", location: "Side Area", status: "active", species: "Trout" },
-  { id: 3, name: "Kids Pool", location: "Front Yard", status: "maintenance", species: "Bass" },
-  { id: 4, name: "Olympic Pool", location: "Center", status: "active", species: "Tilapia" },
-  { id: 5, name: "Training Pool", location: "North Wing", status: "active", species: "Catfish" },
-]
+
 
 // Card filters - can be stored in database or config
-const cardFilters = [
-  { id: "all", name: "All", icon: Activity },
-  { id: "ph", name: "pH Level", icon: Droplets },
-  { id: "temperature", name: "Temperature", icon: Thermometer },
-  { id: "chlorine", name: "Chlorine", icon: Zap },
-  { id: "salinity", name: "Salinity", icon: Waves },
-  { id: "dissolved_oxygen", name: "Dissolved Oxygen", icon: Zap },
-  { id: "turbidity", name: "Turbidity", icon: Eye },
-  { id: "fish_state", name: "Fish State", icon: Fish },
+const cardFilters: any = [
+  { id: "all", name: "الكل", icon: Activity },
+  { id: "ph", name: "مستوى الحموضة", icon: Droplets },
+  { id: "temperature", name: "درجة الحرارة", icon: Thermometer },
+  { id: "chlorine", name: "الكلورين", icon: Zap },
+  { id: "salinity", name: "الملوحة", icon: Waves },
+  { id: "dissolved_oxygen", name: "الأكسجين المذاب", icon: Zap },
+  { id: "turbidity", name: "العكارة", icon: Eye },
+  { id: "fish_state", name: "حالة الأسماك", icon: Fish },
 ]
 
 // Dashboard cards data - fetch from database: SELECT * FROM pool_measurements WHERE pool_id = ? ORDER BY created_at DESC LIMIT 1
-const dashboardCardsData = [
+const dashboardCardsData: any = [
   {
     id: 1,
     pool_id: 1,
     parameter: "ph",
-    title: "pH Level",
+    title: "مستوى الحموضة",
     value: "7.2",
     unit: "",
     status: "good",
@@ -113,9 +107,9 @@ const dashboardCardsData = [
     id: 2,
     pool_id: 1,
     parameter: "temperature",
-    title: "Temperature",
+    title: "درجة الحرارة",
     value: "78",
-    unit: "°F",
+    unit: "°ف",
     status: "good",
     icon: Thermometer,
     color: "#38bdf8",
@@ -127,9 +121,9 @@ const dashboardCardsData = [
     id: 3,
     pool_id: 1,
     parameter: "chlorine",
-    title: "Chlorine",
+    title: "الكلورين",
     value: "2.1",
-    unit: "ppm",
+    unit: "جزء في المليون",
     status: "warning",
     icon: Zap,
     color: "#38bdf8",
@@ -141,9 +135,9 @@ const dashboardCardsData = [
     id: 4,
     pool_id: 1,
     parameter: "salinity",
-    title: "Salinity",
+    title: "الملوحة",
     value: "35",
-    unit: "ppt",
+    unit: "جزء في الألف",
     status: "good",
     icon: Waves,
     color: "#38bdf8",
@@ -155,9 +149,9 @@ const dashboardCardsData = [
     id: 5,
     pool_id: 1,
     parameter: "dissolved_oxygen",
-    title: "Dissolved Oxygen",
+    title: "الأكسجين المذاب",
     value: "8.2",
-    unit: "mg/L",
+    unit: "مجم/لتر",
     status: "good",
     icon: Zap,
     color: "#38bdf8",
@@ -169,9 +163,9 @@ const dashboardCardsData = [
     id: 6,
     pool_id: 1,
     parameter: "turbidity",
-    title: "Turbidity",
+    title: "العكارة",
     value: "2.1",
-    unit: "NTU",
+    unit: "وحدة العكارة",
     status: "warning",
     icon: Eye,
     color: "#38bdf8",
@@ -183,8 +177,8 @@ const dashboardCardsData = [
     id: 7,
     pool_id: 1,
     parameter: "fish_state",
-    title: "Fish State",
-    value: "Active",
+    title: "حالة الأسماك",
+    value: "نشطة",
     unit: "",
     status: "good",
     icon: Fish,
@@ -197,7 +191,7 @@ const dashboardCardsData = [
     id: 8,
     pool_id: 1,
     parameter: "overall_health",
-    title: "Overall Health",
+    title: "الصحة العامة",
     value: "92",
     unit: "%",
     status: "good",
@@ -210,7 +204,7 @@ const dashboardCardsData = [
 ]
 
 // Chart data - fetch from database: SELECT * FROM pool_measurements WHERE pool_id = ? AND created_at >= ? ORDER BY created_at
-const chartDataFromDB = [
+const chartDataFromDB: any = [
   { time: "1h", ph: 7.1, temperature: 76, chlorine: 2.0, overall: 85, created_at: "2024-01-15T09:30:00Z" },
   { time: "2h", ph: 7.2, temperature: 77, chlorine: 2.1, overall: 87, created_at: "2024-01-15T08:30:00Z" },
   { time: "3h", ph: 7.3, temperature: 78, chlorine: 2.2, overall: 89, created_at: "2024-01-15T07:30:00Z" },
@@ -220,7 +214,7 @@ const chartDataFromDB = [
 ]
 
 // General farm statistics
-const farmStats = {
+const farmStats: any = {
   totalPools: 5,
   activePools: 4,
   maintenancePools: 1,
@@ -232,50 +226,50 @@ const farmStats = {
 }
 
 // Recommendations data - fetch from database: SELECT * FROM recommendations WHERE pool_id = ? ORDER BY priority DESC, created_at DESC
-const recommendationsData = [
+const recommendationsData: any = [
   {
     id: 1,
     pool_id: 1,
-    title: "Temperature Too Low",
-    description: "Pool temperature is below optimal range. Consider heating the pool to maintain comfort.",
+    title: "درجة الحرارة منخفضة",
+    description: "درجة حرارة الحوض أقل من المعدل الأمثل. يُنصح بتسخين الحوض للحفاظ على الراحة.",
     priority: "high", // high, medium, low
     parameter: "temperature",
     current_value: 76,
-    recommended_value: "78-82°F",
-    action: "Increase heater temperature setting",
+    recommended_value: "78-82°ف",
+    action: "زيادة إعداد درجة حرارة المدفأة",
     created_at: "2024-01-15T10:30:00Z",
     status: "active", // active, resolved, ignored
   },
   {
     id: 2,
     pool_id: 1,
-    title: "Chlorine Level Warning",
-    description: "Chlorine levels are slightly elevated. Monitor closely to prevent over-chlorination.",
+    title: "تحذير مستوى الكلورين",
+    description: "مستويات الكلورين مرتفعة قليلاً. راقب عن كثب لمنع الإفراط في الكلورة.",
     priority: "medium",
     parameter: "chlorine",
     current_value: 2.1,
-    recommended_value: "1.0-2.0 ppm",
-    action: "Reduce chlorine dosing or increase circulation",
+    recommended_value: "1.0-2.0 جزء في المليون",
+    action: "تقليل جرعة الكلورين أو زيادة الدوران",
     created_at: "2024-01-15T10:25:00Z",
     status: "active",
   },
   {
     id: 3,
     pool_id: 2,
-    title: "Regular Maintenance Due",
-    description: "Schedule regular cleaning and filter maintenance for optimal performance.",
+    title: "صيانة دورية مطلوبة",
+    description: "جدولة التنظيف المنتظم وصيانة المرشح للحصول على الأداء الأمثل.",
     priority: "low",
     parameter: "maintenance",
     current_value: null,
-    recommended_value: "Weekly",
-    action: "Schedule maintenance appointment",
+    recommended_value: "أسبوعياً",
+    action: "جدولة موعد الصيانة",
     created_at: "2024-01-15T09:00:00Z",
     status: "active",
   },
 ]
 
 // Historical data - fetch from database: SELECT * FROM pool_measurements WHERE pool_id = ? ORDER BY created_at DESC
-const historicalData = [
+const historicalData: any = [
   {
     id: 1,
     pool_id: 1,
@@ -285,15 +279,15 @@ const historicalData = [
     salinity: 35,
     dissolved_oxygen: 8.2,
     turbidity: 2.1,
-    fish_state: "Active",
-    overall_status: "good",
+    fish_state: "نشطة",
+    overall_status: "جيد",
     created_at: "2024-01-15T10:30:00Z",
   },
   // ... more historical records
 ]
 
 // Bacteria test data - fetch from database: SELECT * FROM bacteria_tests WHERE pool_id = ? ORDER BY created_at DESC
-const bacteriaTestData = [
+const bacteriaTestData: any = [
   {
     id: 1,
     pool_id: 1,
@@ -315,7 +309,7 @@ const bacteriaTestData = [
 ]
 
 // Settings/Configuration data - fetch from database: SELECT * FROM pool_settings WHERE pool_id = ?
-const poolSettingsData = [
+const poolSettingsData: any = [
   {
     id: 1,
     pool_id: 1,
@@ -399,20 +393,20 @@ function SearchableSelect({
   searchPlaceholder,
   className,
 }: {
-  value: string
-  onValueChange: (value: string) => void
-  options: Array<{ value: string; label: string; subtitle?: string }>
-  placeholder: string
-  searchPlaceholder: string
-  className?: string
+  value: any
+  onValueChange: (value: any) => void
+  options: any
+  placeholder: any
+  searchPlaceholder: any
+  className?: any
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<any>(false)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className={cn("justify-between", className)}>
-          {value ? options.find((option) => option.value === value)?.label : placeholder}
+          {value ? options.find((option:any) => option.value === value)?.label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -420,9 +414,9 @@ function SearchableSelect({
         <Command>
           <CommandInput placeholder={searchPlaceholder} />
           <CommandList>
-            <CommandEmpty>No option found.</CommandEmpty>
+            <CommandEmpty>لا توجد خيارات متاحة.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {options.map((option: any) => (
                 <CommandItem
                   key={option.value}
                   value={option.value}
@@ -450,87 +444,115 @@ export default function DashboardPage() {
   const router = useRouter()
 
   // State variables
-  const [activeNavItem, setActiveNavItem] = useState("Home")
-  const [activeSidebarItem, setActiveSidebarItem] = useState("Dashboard")
-  const [selectedPool, setSelectedPool] = useState("1")
-  const [selectedFilter, setSelectedFilter] = useState("all")
-  const [timeRange, setTimeRange] = useState("6h")
-  const [isLoading, setIsLoading] = useState(false)
-  const [settings, setSettings] = useState(poolSettingsData)
-  const [bacteriaTestInProgress, setBacteriaTestInProgress] = useState(false)
-  const [waterChangeInProgress, setWaterChangeInProgress] = useState(false)
-  const [feedingInProgress, setFeedingInProgress] = useState(false)
+  const [activeNavItem, setActiveNavItem] = useState<any>("الرئيسية")
+  const [activeSidebarItem, setActiveSidebarItem] = useState<any>("لوحة القيادة")
+  const [selectedPool, setSelectedPool] = useState<any>("1")
+  const [selectedFilter, setSelectedFilter] = useState<any>("all")
+  const [timeRange, setTimeRange] = useState<any>("6h")
+  const [isLoading, setIsLoading] = useState<any>(false)
+  const [settings, setSettings] = useState<any>(poolSettingsData)
+  const [bacteriaTestInProgress, setBacteriaTestInProgress] = useState<any>(false)
+  const [waterChangeInProgress, setWaterChangeInProgress] = useState<any>(false)
+  const [feedingInProgress, setFeedingInProgress] = useState<any>(false)
+  const [poolsData, setPools] = useState<any>()
+  // Pools data - fetch from database: SELECT * FROM pools
+useEffect(() => {
+  const fetchPools = async (): Promise<any> => {
+  try {
+    console.log('Fetching pools from API...')
+    const response: any = await fetch(`http://localhost:3000/api/pools`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const pools: any = await response.json()
+    console.log('Pools fetched successfully:', pools)
+    setPools(pools)
+    return pools
+  } catch (error: any) {
+    console.error('Error fetching pools:', error)
+    // Fallback to dummy data if API fails
+    return [
+      { pool_id: 1, number_of_fish: 150, age_of_fish: 45, capacity_liters: 2000, created_at: "2024-01-15T10:30:00Z" },
+      { pool_id: 2, number_of_fish: 200, age_of_fish: 60, capacity_liters: 3000, created_at: "2024-01-10T08:00:00Z" },
+      { pool_id: 3, number_of_fish: 75, age_of_fish: 30, capacity_liters: 1500, created_at: "2024-01-20T14:15:00Z" },
+      { pool_id: 4, number_of_fish: 25, age_of_fish: 6, capacity_liters: 5000, created_at: "2025-07-19T04:52:35.301Z" },
+    ]
+  }
+}
+fetchPools()
+},[]);
+  
 
   // Prepare options for searchable selects
-  const poolOptions = poolsData.map((pool) => ({
-    value: pool.id.toString(),
-    label: pool.name,
-    subtitle: `${pool.species} - ${pool.location}`,
+  const poolOptions: any = poolsData?.map((pool: any) => ({
+    value: pool.pool_id.toString(),
+    label: `حوض ${pool.pool_id}`,
+    subtitle: `${pool.number_of_fish} سمكة - ${pool.capacity_liters}لتر`,
   }))
 
-  const filterOptions = cardFilters.map((filter) => ({
+  const filterOptions: any = cardFilters.map((filter: any) => ({
     value: filter.id,
     label: filter.name,
   }))
 
   // API Functions - Replace these with your actual API calls
-  const fetchPoolData = async (poolId: string) => {
+  const fetchPoolData = async (poolId: any): Promise<any> => {
     try {
       console.log(`Fetching data for pool ${poolId}`)
       // Replace with: const response = await fetch(`/api/pools/${poolId}/measurements`)
       // const data = await response.json()
-      return dashboardCardsData.filter((card) => card.pool_id.toString() === poolId)
-    } catch (error) {
+      return dashboardCardsData.filter((card: any) => card.pool_id.toString() === poolId)
+    } catch (error: any) {
       console.error("Error fetching pool data:", error)
       return []
     }
   }
 
-  const fetchHistoricalData = async (poolId: string, timeRange: string, parameter?: string) => {
+  const fetchHistoricalData = async (poolId: any, timeRange: any, parameter?: any): Promise<any> => {
     try {
       console.log(`Fetching historical data for pool ${poolId}, range: ${timeRange}, parameter: ${parameter}`)
       // Replace with: const response = await fetch(`/api/pools/${poolId}/history?range=${timeRange}&parameter=${parameter}`)
       // const data = await response.json()
-      return historicalData.filter((record) => record.pool_id.toString() === poolId)
-    } catch (error) {
+      return historicalData.filter((record: any) => record.pool_id.toString() === poolId)
+    } catch (error: any) {
       console.error("Error fetching historical data:", error)
       return []
     }
   }
 
-  const fetchRecommendations = async (poolId: string) => {
+  const fetchRecommendations = async (poolId: any): Promise<any> => {
     try {
       console.log(`Fetching recommendations for pool ${poolId}`)
       // Replace with: const response = await fetch(`/api/pools/${poolId}/recommendations`)
       // const data = await response.json()
       return recommendationsData
-        .filter((rec) => rec.pool_id.toString() === poolId)
-        .sort((a, b) => {
-          const priorityOrder = { high: 3, medium: 2, low: 1 }
+        .filter((rec: any) => rec.pool_id.toString() === poolId)
+        .sort((a: any, b: any) => {
+          const priorityOrder: any = { high: 3, medium: 2, low: 1 }
           return (
             priorityOrder[b.priority as keyof typeof priorityOrder] -
             priorityOrder[a.priority as keyof typeof priorityOrder]
           )
         })
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching recommendations:", error)
       return []
     }
   }
 
-  const fetchPoolSettings = async (poolId: string) => {
+  const fetchPoolSettings = async (poolId: any): Promise<any> => {
     try {
       console.log(`Fetching settings for pool ${poolId}`)
       // Replace with: const response = await fetch(`/api/pools/${poolId}/settings`)
       // const data = await response.json()
-      return poolSettingsData.filter((setting) => setting.pool_id.toString() === poolId)
-    } catch (error) {
+      return poolSettingsData.filter((setting: any) => setting.pool_id.toString() === poolId)
+    } catch (error: any) {
       console.error("Error fetching pool settings:", error)
       return []
     }
   }
 
-  const updatePoolSettings = async (poolId: string, settingsData: any[]) => {
+  const updatePoolSettings = async (poolId: any, settingsData: any): Promise<any> => {
     try {
       console.log(`Updating settings for pool ${poolId}:`, settingsData)
       setIsLoading(true)
@@ -544,20 +566,20 @@ export default function DashboardPage() {
       // const result = await response.json()
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve: any) => setTimeout(resolve, 1000))
       setSettings(settingsData)
       setIsLoading(false)
-      alert("Settings updated successfully!")
+      alert("تم تحديث الإعدادات بنجاح!")
       return { success: true }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating pool settings:", error)
       setIsLoading(false)
-      alert("Failed to update settings. Please try again.")
+      alert("فشل في تحديث الإعدادات. حاول مرة أخرى.")
       return { success: false, error }
     }
   }
 
-  const startBacteriaTest = async (poolId: string) => {
+  const startBacteriaTest = async (poolId: any): Promise<any> => {
     try {
       console.log(`Starting bacteria test for pool ${poolId}`)
       setBacteriaTestInProgress(true)
@@ -565,19 +587,19 @@ export default function DashboardPage() {
       // const result = await response.json()
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 5000))
+      await new Promise((resolve: any) => setTimeout(resolve, 5000))
       setBacteriaTestInProgress(false)
-      alert("Bacteria test completed!")
+      alert("تم إكمال فحص البكتيريا!")
       return { success: true }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error starting bacteria test:", error)
       setBacteriaTestInProgress(false)
-      alert("Failed to start bacteria test. Please try again.")
+      alert("فشل في بدء فحص البكتيريا. حاول مرة أخرى.")
       return { success: false, error }
     }
   }
 
-  const changeWater = async (poolId: string) => {
+  const changeWater = async (poolId: any): Promise<any> => {
     try {
       console.log(`Starting water change for pool ${poolId}`)
       setWaterChangeInProgress(true)
@@ -585,19 +607,19 @@ export default function DashboardPage() {
       // const result = await response.json()
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 8000))
+      await new Promise((resolve: any) => setTimeout(resolve, 8000))
       setWaterChangeInProgress(false)
-      alert("Water change completed successfully!")
+      alert("تم تغيير الماء بنجاح!")
       return { success: true }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error changing water:", error)
       setWaterChangeInProgress(false)
-      alert("Failed to change water. Please try again.")
+      alert("فشل في تغيير الماء. حاول مرة أخرى.")
       return { success: false, error }
     }
   }
 
-  const feedFish = async (poolId: string) => {
+  const feedFish = async (poolId: any): Promise<any> => {
     try {
       console.log(`Feeding fish in pool ${poolId}`)
       setFeedingInProgress(true)
@@ -605,37 +627,37 @@ export default function DashboardPage() {
       // const result = await response.json()
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      await new Promise((resolve: any) => setTimeout(resolve, 3000))
       setFeedingInProgress(false)
-      alert("Fish feeding completed!")
+      alert("تم إطعام الأسماك بنجاح!")
       return { success: true }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error feeding fish:", error)
       setFeedingInProgress(false)
-      alert("Failed to feed fish. Please try again.")
+      alert("فشل في إطعام الأسماك. حاول مرة أخرى.")
       return { success: false, error }
     }
   }
 
-  const fetchBacteriaTests = async (poolId: string) => {
+  const fetchBacteriaTests = async (poolId: any): Promise<any> => {
     try {
       console.log(`Fetching bacteria tests for pool ${poolId}`)
       // Replace with: const response = await fetch(`/api/pools/${poolId}/bacteria-tests`)
       // const data = await response.json()
-      return bacteriaTestData.filter((test) => test.pool_id.toString() === poolId)
-    } catch (error) {
+      return bacteriaTestData.filter((test: any) => test.pool_id.toString() === poolId)
+    } catch (error: any) {
       console.error("Error fetching bacteria tests:", error)
       return []
     }
   }
 
-  const fetchFarmStats = async () => {
+  const fetchFarmStats = async (): Promise<any> => {
     try {
       console.log("Fetching farm statistics")
       // Replace with: const response = await fetch('/api/farm/stats')
       // const data = await response.json()
       return farmStats
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching farm stats:", error)
       return farmStats // Return default stats on error
     }
@@ -644,9 +666,9 @@ export default function DashboardPage() {
   // Add these useEffect hooks after the state declarations
   useEffect(() => {
     // Load initial data when component mounts
-    const loadInitialData = async () => {
+    const loadInitialData = async (): Promise<any> => {
       try {
-        const [poolData, recommendations, settings, bacteriaTests] = await Promise.all([
+        const [poolData, recommendations, settings, bacteriaTests]: any = await Promise.all([
           fetchPoolData(selectedPool),
           fetchRecommendations(selectedPool),
           fetchPoolSettings(selectedPool),
@@ -655,7 +677,7 @@ export default function DashboardPage() {
         // Update state with fetched data
         setSettings(settings)
         // You can add more state updates here as needed
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error loading initial data:", error)
       }
     }
@@ -665,9 +687,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     // Reload data when selected pool changes
-    const loadPoolData = async () => {
+    const loadPoolData = async (): Promise<any> => {
       try {
-        const [poolData, recommendations, settings, bacteriaTests] = await Promise.all([
+        const [poolData, recommendations, settings, bacteriaTests]: any = await Promise.all([
           fetchPoolData(selectedPool),
           fetchRecommendations(selectedPool),
           fetchPoolSettings(selectedPool),
@@ -675,7 +697,7 @@ export default function DashboardPage() {
         ])
         setSettings(settings)
         // Update other relevant state here
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error loading pool data:", error)
       }
     }
@@ -686,19 +708,19 @@ export default function DashboardPage() {
   // Add this useEffect after the existing useEffects to restore sidebar selection
   useEffect(() => {
     // Check if there's a stored sidebar selection from navigation
-    const storedSidebarItem = sessionStorage.getItem("selectedSidebarItem")
+    const storedSidebarItem: any = sessionStorage.getItem("selectedSidebarItem")
     if (storedSidebarItem) {
       setActiveSidebarItem(storedSidebarItem)
       sessionStorage.removeItem("selectedSidebarItem") // Clean up
     }
   }, [])
 
-  const handleNavClick = (itemName: string, href: string) => {
+  const handleNavClick = (itemName: any, href: any): void => {
     setActiveNavItem(itemName)
     console.log(`Navigating to: ${href}`)
   }
 
-  const handleSidebarClick = (itemName: string, href: string) => {
+  const handleSidebarClick = (itemName: any, href: any): void => {
     setActiveSidebarItem(itemName)
     console.log(`Navigating to: ${href}`)
     // Handle Profile navigation
@@ -708,12 +730,12 @@ export default function DashboardPage() {
     // Other items are handled within the same page by updating activeSidebarItem
   }
 
-  const handleProfileClick = () => {
+  const handleProfileClick = (): void => {
     // Navigate to profile page
     router.push("/profile")
   }
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     // Clear any stored user data
     localStorage.removeItem("aquatech_user")
     localStorage.removeItem("aquatech_basins")
@@ -723,7 +745,7 @@ export default function DashboardPage() {
     router.push("/")
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: any): any => {
     switch (status) {
       case "good":
         return "#38bdf8"
@@ -736,7 +758,7 @@ export default function DashboardPage() {
     }
   }
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (priority: any): any => {
     switch (priority) {
       case "high":
         return "#ef4444"
@@ -749,7 +771,7 @@ export default function DashboardPage() {
     }
   }
 
-  const getChartDataKey = () => {
+  const getChartDataKey = (): any => {
     switch (selectedFilter) {
       case "ph":
         return "ph"
@@ -762,22 +784,22 @@ export default function DashboardPage() {
     }
   }
 
-  const getChartTitle = () => {
+  const getChartTitle = (): any => {
     switch (selectedFilter) {
       case "ph":
-        return "pH Level Over Time"
+        return "مستوى الحموضة عبر الوقت"
       case "temperature":
-        return "Temperature Over Time"
+        return "درجة الحرارة عبر الوقت"
       case "chlorine":
-        return "Chlorine Level Over Time"
+        return "مستوى الكلورين عبر الوقت"
       default:
-        return "Overall Pool Health"
+        return "الصحة العامة للحوض"
     }
   }
 
-  const getCurrentPoolName = () => {
-    const pool = poolsData.find((p) => p.id.toString() === selectedPool)
-    return pool ? pool.name : "Pool"
+  const getCurrentPoolName = (): any => {
+    const pool: any = poolsData?.find((p: any) => p.pool_id.toString() === selectedPool)
+    return pool ? `حوض ${pool.pool_id}` : "حوض"
   }
 
   return (
@@ -794,15 +816,15 @@ export default function DashboardPage() {
               borderBottomColor: "#4a5568",
             }}
           >
-            <h1 className="text-xl font-bold text-white">AquaTech Monitor</h1>
-            <p className="text-sm text-gray-400 mt-1">Farm Management System</p>
+            <h1 className="text-xl font-bold text-white">آكوا تيك مونيتور</h1>
+            <p className="text-sm text-gray-400 mt-1">نظام إدارة المزرعة</p>
           </div>
 
           {/* Sidebar Content */}
           <div className="flex-1 py-4">
             <nav className="space-y-2 px-4">
-              {sidebarItems.map((item) => {
-                const IconComponent = item.icon
+              {sidebarItems.map((item: any) => {
+                const IconComponent: any = item.icon
                 return (
                   <button
                     key={item.id}
@@ -851,7 +873,7 @@ export default function DashboardPage() {
                 <AvatarFallback style={{ backgroundColor: "#38bdf8", color: "white" }}>
                   {userProfile.name
                     .split(" ")
-                    .map((n) => n[0])
+                    .map((n: any) => n[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
@@ -867,7 +889,7 @@ export default function DashboardPage() {
               onClick={handleLogout}
             >
               <LogOut className="h-4 w-4 mr-3" />
-              <span className="text-sm font-medium">Logout</span>
+              <span className="text-sm font-medium">تسجيل الخروج</span>
             </Button>
           </div>
         </div>
@@ -875,11 +897,11 @@ export default function DashboardPage() {
         {/* Main Content Area */}
         <div className="flex-1 overflow-auto" style={{ backgroundColor: "#1a202c" }}>
           {/* General Dashboard Page */}
-          {activeSidebarItem === "Dashboard" && (
+          {activeSidebarItem === "لوحة القيادة" && (
             <div className="p-6">
               <div className="mb-6">
-                <h1 className="text-3xl font-bold mb-4 text-white">AquaTech Farm Dashboard</h1>
-                <p className="text-gray-300 mb-6">Overview of your entire aquaculture operation</p>
+                <h1 className="text-3xl font-bold mb-4 text-white">لوحة قيادة مزرعة آكوا تيك</h1>
+                <p className="text-gray-300 mb-6">نظرة عامة على عملية الاستزراع المائي بالكامل</p>
               </div>
 
               {/* Farm Statistics */}
@@ -888,7 +910,7 @@ export default function DashboardPage() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xs font-medium text-gray-400 mb-1">Total Pools</p>
+                        <p className="text-xs font-medium text-gray-400 mb-1">إجمالي الأحواض</p>
                         <div className="flex items-baseline space-x-1">
                           <span className="text-2xl font-bold text-sky-400">{farmStats.totalPools}</span>
                         </div>
@@ -909,7 +931,7 @@ export default function DashboardPage() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xs font-medium text-gray-400 mb-1">Average Health</p>
+                        <p className="text-xs font-medium text-gray-400 mb-1">متوسط الصحة</p>
                         <div className="flex items-baseline space-x-1">
                           <span className="text-2xl font-bold text-sky-400">{farmStats.averageHealth}</span>
                           <span className="text-xs text-gray-500">%</span>
@@ -919,7 +941,7 @@ export default function DashboardPage() {
                           className="mt-1 text-xs"
                           style={{ backgroundColor: "#38bdf820", color: "#38bdf8" }}
                         >
-                          Excellent
+                          ممتاز
                         </Badge>
                       </div>
                       <Heart className="h-8 w-8 opacity-60 text-sky-400" />
@@ -931,7 +953,7 @@ export default function DashboardPage() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xs font-medium text-gray-400 mb-1">Total Fish</p>
+                        <p className="text-xs font-medium text-gray-400 mb-1">إجمالي الأسماك</p>
                         <div className="flex items-baseline space-x-1">
                           <span className="text-2xl font-bold text-sky-400">
                             {farmStats.totalFish.toLocaleString()}
@@ -942,7 +964,7 @@ export default function DashboardPage() {
                           className="mt-1 text-xs"
                           style={{ backgroundColor: "#38bdf820", color: "#38bdf8" }}
                         >
-                          Healthy
+                          سليم
                         </Badge>
                       </div>
                       <Fish className="h-8 w-8 opacity-60 text-sky-400" />
@@ -954,7 +976,7 @@ export default function DashboardPage() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xs font-medium text-gray-400 mb-1">Critical Alerts</p>
+                        <p className="text-xs font-medium text-gray-400 mb-1">التنبيهات الحرجة</p>
                         <div className="flex items-baseline space-x-1">
                           <span className="text-2xl font-bold text-sky-400">{farmStats.criticalAlerts}</span>
                         </div>
@@ -963,7 +985,7 @@ export default function DashboardPage() {
                           className="mt-1 text-xs"
                           style={{ backgroundColor: "#fbbf2420", color: "#fbbf24" }}
                         >
-                          Attention
+                          انتباه
                         </Badge>
                       </div>
                       <AlertTriangle className="h-8 w-8 opacity-60 text-yellow-400" />
@@ -976,16 +998,16 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
-                    <CardTitle className="text-white">Average Temperature Across Pools</CardTitle>
+                    <CardTitle className="text-white">متوسط درجة الحرارة عبر الأحواض</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Current: {farmStats.averageTemperature}°F
+                      الحالي: {farmStats.averageTemperature}°ف
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ChartContainer
                       config={{
                         value: {
-                          label: "Temperature",
+                          label: "درجة الحرارة",
                           color: "#38bdf8",
                         },
                       }}
@@ -1012,14 +1034,14 @@ export default function DashboardPage() {
 
                 <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
-                    <CardTitle className="text-white">Average pH Levels</CardTitle>
-                    <CardDescription className="text-gray-400">Current: {farmStats.averagePH}</CardDescription>
+                    <CardTitle className="text-white">متوسط مستويات الحموضة</CardTitle>
+                    <CardDescription className="text-gray-400">الحالي: {farmStats.averagePH}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ChartContainer
                       config={{
                         value: {
-                          label: "pH Level",
+                          label: "مستوى الحموضة",
                           color: "#38bdf8",
                         },
                       }}
@@ -1048,30 +1070,30 @@ export default function DashboardPage() {
               {/* Pool Status Overview */}
               <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Pool Status Overview</CardTitle>
-                  <CardDescription className="text-gray-400">Current status of all pools in your farm</CardDescription>
+                  <CardTitle className="text-white">نظرة عامة على حالة الأحواض</CardTitle>
+                  <CardDescription className="text-gray-400">الحالة الحالية لجميع الأحواض في مزرعتك</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {poolsData.map((pool) => (
+                    {poolsData?.map((pool: any) => (
                       <div
-                        key={pool.id}
+                        key={pool.pool_id}
                         className="p-4 border border-gray-600 rounded-lg hover:shadow-md transition-shadow bg-gray-700"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-semibold text-white">{pool.name}</h3>
+                          <h3 className="font-semibold text-white">حوض {pool.pool_id}</h3>
                           <Badge
                             variant="secondary"
                             style={{
-                              backgroundColor: pool.status === "active" ? "#38bdf820" : "#fbbf2420",
-                              color: pool.status === "active" ? "#38bdf8" : "#fbbf24",
+                              backgroundColor: "#38bdf820",
+                              color: "#38bdf8",
                             }}
                           >
-                            {pool.status}
+                            نشط
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-400 mb-1">Location: {pool.location}</p>
-                        <p className="text-sm text-gray-400">Species: {pool.species}</p>
+                        <p className="text-sm text-gray-400 mb-1">الأسماك: {pool.number_of_fish}</p>
+                        <p className="text-sm text-gray-400">السعة: {pool.capacity_liters}لتر</p>
                       </div>
                     ))}
                   </div>
@@ -1081,11 +1103,11 @@ export default function DashboardPage() {
           )}
 
           {/* Pools Dashboard Page */}
-          {activeSidebarItem === "Pools Dashboard" && (
+          {activeSidebarItem === "إدارة الأحواض" && (
             <div className="p-6">
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h1 className="text-3xl font-bold text-white">{getCurrentPoolName()} Dashboard</h1>
+                  <h1 className="text-3xl font-bold text-white">لوحة قيادة {getCurrentPoolName()}</h1>
                   <div className="flex gap-3">
                     <Button
                       onClick={() => changeWater(selectedPool)}
@@ -1096,12 +1118,12 @@ export default function DashboardPage() {
                       {waterChangeInProgress ? (
                         <>
                           <RefreshCw className="h-4 w-4 animate-spin" />
-                          <span>Changing...</span>
+                          <span>جاري التغيير...</span>
                         </>
                       ) : (
                         <>
                           <RotateCcw className="h-4 w-4" />
-                          <span>Change Water</span>
+                          <span>تغيير الماء</span>
                         </>
                       )}
                     </Button>
@@ -1114,12 +1136,12 @@ export default function DashboardPage() {
                       {feedingInProgress ? (
                         <>
                           <RefreshCw className="h-4 w-4 animate-spin" />
-                          <span>Feeding...</span>
+                          <span>جاري الإطعام...</span>
                         </>
                       ) : (
                         <>
                           <Fish className="h-4 w-4" />
-                          <span>Feed Fish</span>
+                          <span>إطعام الأسماك</span>
                         </>
                       )}
                     </Button>
@@ -1127,29 +1149,29 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex flex-wrap gap-4 mb-6">
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-300">Select Pool:</label>
+                    <label className="text-sm font-medium text-gray-300">اختر الحوض:</label>
                     <SearchableSelect
                       value={selectedPool}
                       onValueChange={setSelectedPool}
                       options={poolOptions}
-                      placeholder="Select a pool..."
-                      searchPlaceholder="Search pools..."
+                      placeholder="اختر حوض..."
+                      searchPlaceholder="البحث عن الأحواض..."
                       className="w-64"
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-300">Show Parameter:</label>
+                    <label className="text-sm font-medium text-gray-300">إظهار المعيار:</label>
                     <SearchableSelect
                       value={selectedFilter}
                       onValueChange={setSelectedFilter}
                       options={filterOptions}
-                      placeholder="Select parameter..."
-                      searchPlaceholder="Search parameters..."
+                      placeholder="اختر معيار..."
+                      searchPlaceholder="البحث عن المعايير..."
                       className="w-48"
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-300">Time Range:</label>
+                    <label className="text-sm font-medium text-gray-300">المدى الزمني:</label>
                     <Select value={timeRange} onValueChange={setTimeRange}>
                       <SelectTrigger className="w-24">
                         <SelectValue />
@@ -1170,9 +1192,9 @@ export default function DashboardPage() {
                 <>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     {dashboardCardsData
-                      .filter((card) => card.pool_id.toString() === selectedPool)
-                      .map((card) => {
-                        const IconComponent = card.icon
+                      .filter((card: any) => card.pool_id.toString() === selectedPool)
+                      .map((card: any) => {
+                        const IconComponent: any = card.icon
                         return (
                           <Card
                             key={card.id}
@@ -1207,16 +1229,16 @@ export default function DashboardPage() {
 
                   <Card className="bg-gray-800 border-gray-700">
                     <CardHeader>
-                      <CardTitle className="text-white">Overall Pool Health</CardTitle>
+                      <CardTitle className="text-white">الصحة العامة للحوض</CardTitle>
                       <CardDescription className="text-gray-400">
-                        Showing overall health data for the last {timeRange} for {getCurrentPoolName()}
+                        عرض بيانات الصحة العامة لآخر {timeRange} لـ {getCurrentPoolName()}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer
                         config={{
                           value: {
-                            label: "Health Score",
+                            label: "نقاط الصحة",
                             color: "#38bdf8",
                           },
                         }}
@@ -1246,11 +1268,11 @@ export default function DashboardPage() {
                 <>
                   <div className="mb-8">
                     {(() => {
-                      const selectedCard = dashboardCardsData
-                        .filter((card) => card.pool_id.toString() === selectedPool)
-                        .find((card) => card.parameter === selectedFilter)
+                      const selectedCard: any = dashboardCardsData
+                        .filter((card: any) => card.pool_id.toString() === selectedPool)
+                        .find((card: any) => card.parameter === selectedFilter)
                       if (!selectedCard) return null
-                      const IconComponent = selectedCard.icon
+                      const IconComponent: any = selectedCard.icon
                       return (
                         <Card className="max-w-md mx-auto hover:shadow-md transition-shadow duration-200 bg-gray-800 border-gray-700">
                           <CardContent className="p-6">
@@ -1284,7 +1306,7 @@ export default function DashboardPage() {
                     <CardHeader>
                       <CardTitle className="text-white">{getChartTitle()}</CardTitle>
                       <CardDescription className="text-gray-400">
-                        Showing {selectedFilter} data for the last {timeRange} for {getCurrentPoolName()}
+                        عرض بيانات {selectedFilter} لآخر {timeRange} لـ {getCurrentPoolName()}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -1322,43 +1344,43 @@ export default function DashboardPage() {
           )}
 
           {/* History Page */}
-          {activeSidebarItem === "History" && (
+          {activeSidebarItem === "التاريخ" && (
             <div className="p-6">
               <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-4 text-white">Pool History</h1>
+                <h1 className="text-2xl font-bold mb-4 text-white">تاريخ الحوض</h1>
                 <div className="flex flex-wrap gap-4 mb-6">
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-300">Select Pool:</label>
+                    <label className="text-sm font-medium text-gray-300">اختر الحوض:</label>
                     <SearchableSelect
                       value={selectedPool}
                       onValueChange={setSelectedPool}
                       options={poolOptions}
-                      placeholder="Select a pool..."
-                      searchPlaceholder="Search pools..."
+                      placeholder="اختر حوض..."
+                      searchPlaceholder="البحث عن الأحواض..."
                       className="w-64"
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-300">Show Data:</label>
+                    <label className="text-sm font-medium text-gray-300">إظهار البيانات:</label>
                     <SearchableSelect
                       value={selectedFilter}
                       onValueChange={setSelectedFilter}
                       options={filterOptions}
-                      placeholder="Select parameter..."
-                      searchPlaceholder="Search parameters..."
+                      placeholder="اختر معيار..."
+                      searchPlaceholder="البحث عن المعايير..."
                       className="w-48"
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium text-gray-300">Group By:</label>
+                    <label className="text-sm font-medium text-gray-300">تجميع حسب:</label>
                     <Select value={timeRange} onValueChange={setTimeRange}>
                       <SelectTrigger className="w-32">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="hours">Hours</SelectItem>
-                        <SelectItem value="days">Days</SelectItem>
-                        <SelectItem value="weeks">Weeks</SelectItem>
+                        <SelectItem value="hours">ساعات</SelectItem>
+                        <SelectItem value="days">أيام</SelectItem>
+                        <SelectItem value="weeks">أسابيع</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -1367,9 +1389,9 @@ export default function DashboardPage() {
 
               <Card className="mb-8 bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Historical Data - {getCurrentPoolName()}</CardTitle>
+                  <CardTitle className="text-white">البيانات التاريخية - {getCurrentPoolName()}</CardTitle>
                   <CardDescription className="text-gray-400">
-                    {selectedFilter === "all" ? "All measurements" : `${selectedFilter} measurements`} grouped by{" "}
+                    {selectedFilter === "all" ? "جميع القياسات" : `قياسات ${selectedFilter}`} مجمعة حسب{" "}
                     {timeRange}
                   </CardDescription>
                 </CardHeader>
@@ -1378,33 +1400,33 @@ export default function DashboardPage() {
                     <table className="w-full border-collapse">
                       <thead>
                         <tr style={{ backgroundColor: "#2d3748" }}>
-                          <th className="border border-gray-600 px-4 py-2 text-left text-white">Date/Time</th>
+                          <th className="border border-gray-600 px-4 py-2 text-left text-white">التاريخ/الوقت</th>
                           {selectedFilter === "all" ? (
                             <>
-                              <th className="border border-gray-600 px-4 py-2 text-left text-white">pH Level</th>
+                              <th className="border border-gray-600 px-4 py-2 text-left text-white">مستوى الحموضة</th>
                               <th className="border border-gray-600 px-4 py-2 text-left text-white">
-                                Temperature (°F)
+                                درجة الحرارة (°ف)
                               </th>
-                              <th className="border border-gray-600 px-4 py-2 text-left text-white">Chlorine (ppm)</th>
-                              <th className="border border-gray-600 px-4 py-2 text-left text-white">Salinity (ppt)</th>
-                              <th className="border border-gray-600 px-4 py-2 text-left text-white">Fish State</th>
-                              <th className="border border-gray-600 px-4 py-2 text-left text-white">Status</th>
+                              <th className="border border-gray-600 px-4 py-2 text-left text-white">الكلورين (جزء في المليون)</th>
+                              <th className="border border-gray-600 px-4 py-2 text-left text-white">الملوحة (جزء في الألف)</th>
+                              <th className="border border-gray-600 px-4 py-2 text-left text-white">حالة الأسماك</th>
+                              <th className="border border-gray-600 px-4 py-2 text-left text-white">الحالة</th>
                             </>
                           ) : (
                             <>
                               <th className="border border-gray-600 px-4 py-2 text-left text-white">
-                                {cardFilters.find((f) => f.id === selectedFilter)?.name || "Value"}
+                                {cardFilters.find((f: any) => f.id === selectedFilter)?.name || "القيمة"}
                               </th>
-                              <th className="border border-gray-600 px-4 py-2 text-left text-white">Status</th>
+                              <th className="border border-gray-600 px-4 py-2 text-left text-white">الحالة</th>
                             </>
                           )}
                         </tr>
                       </thead>
                       <tbody>
                         {historicalData
-                          .filter((record) => record.pool_id.toString() === selectedPool)
+                          .filter((record: any) => record.pool_id.toString() === selectedPool)
                           .slice(0, 20)
-                          .map((record, i) => (
+                          .map((record: any, i: any) => (
                             <tr key={record.id} className={i % 2 === 0 ? "bg-gray-700" : "bg-gray-800"}>
                               <td className="border border-gray-600 px-4 py-2 text-gray-300">
                                 {new Date(record.created_at).toLocaleString()}
@@ -1435,7 +1457,7 @@ export default function DashboardPage() {
                               ) : (
                                 <>
                                   <td className="border border-gray-600 px-4 py-2 text-gray-300">
-                                    {record[selectedFilter as keyof typeof record] || "N/A"}
+                                    {(record as any)[selectedFilter as keyof typeof record] || "N/A"}
                                   </td>
                                   <td className="border border-gray-600 px-4 py-2">
                                     <Badge
@@ -1461,17 +1483,17 @@ export default function DashboardPage() {
               <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-white">
-                    {selectedFilter === "all" ? "Overall Trends" : `${selectedFilter} Trend`}
+                    {selectedFilter === "all" ? "الاتجاهات العامة" : `اتجاه ${selectedFilter}`}
                   </CardTitle>
                   <CardDescription className="text-gray-400">
-                    Historical trend analysis grouped by {timeRange}
+                    تحليل الاتجاه التاريخي مجمع حسب {timeRange}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChartContainer
                     config={{
                       value: {
-                        label: selectedFilter === "all" ? "Overall Health" : selectedFilter,
+                        label: selectedFilter === "all" ? "الصحة العامة" : selectedFilter,
                         color: "#38bdf8",
                       },
                     }}
@@ -1500,18 +1522,18 @@ export default function DashboardPage() {
           )}
 
           {/* Recommendations Page */}
-          {activeSidebarItem === "Recommendations" && (
+          {activeSidebarItem === "التوصيات" && (
             <div className="p-6">
               <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-4 text-white">Pool Recommendations</h1>
+                <h1 className="text-2xl font-bold mb-4 text-white">توصيات الحوض</h1>
                 <div className="flex items-center space-x-2 mb-6">
-                  <label className="text-sm font-medium text-gray-300">Select Pool:</label>
+                  <label className="text-sm font-medium text-gray-300">اختر الحوض:</label>
                   <SearchableSelect
                     value={selectedPool}
                     onValueChange={setSelectedPool}
                     options={poolOptions}
-                    placeholder="Select a pool..."
-                    searchPlaceholder="Search pools..."
+                    placeholder="اختر حوض..."
+                    searchPlaceholder="البحث عن الأحواض..."
                     className="w-64"
                   />
                 </div>
@@ -1519,11 +1541,11 @@ export default function DashboardPage() {
 
               {/* Important Recommendations First */}
               <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4 text-red-400">🚨 Important Issues</h2>
+                <h2 className="text-xl font-semibold mb-4 text-red-400">🚨 مسائل مهمة</h2>
                 <div className="space-y-4">
                   {recommendationsData
-                    .filter((rec) => rec.pool_id.toString() === selectedPool && rec.priority === "high")
-                    .map((recommendation) => (
+                    .filter((rec: any) => rec.pool_id.toString() === selectedPool && rec.priority === "high")
+                    .map((recommendation: any) => (
                       <Card
                         key={recommendation.id}
                         className="border-l-4 bg-gray-800 border-gray-700"
@@ -1575,12 +1597,12 @@ export default function DashboardPage() {
 
               {/* Other Recommendations */}
               <div>
-                <h2 className="text-xl font-semibold mb-4 text-gray-300">📋 General Recommendations</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-300">📋 التوصيات العامة</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {recommendationsData
-                    .filter((rec) => rec.pool_id.toString() === selectedPool && rec.priority !== "high")
+                    .filter((rec: any) => rec.pool_id.toString() === selectedPool && rec.priority !== "high")
                     .slice(0, 5)
-                    .map((recommendation) => (
+                    .map((recommendation: any) => (
                       <Card
                         key={recommendation.id}
                         className="hover:shadow-md transition-shadow duration-200 bg-gray-800 border-gray-700"
@@ -1627,18 +1649,18 @@ export default function DashboardPage() {
           )}
 
           {/* Bacteria Testing Page */}
-          {activeSidebarItem === "Bacteria Testing" && (
+          {activeSidebarItem === "فحص البكتيريا" && (
             <div className="p-6">
               <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-4 text-white">Bacteria Testing</h1>
+                <h1 className="text-2xl font-bold mb-4 text-white">فحص البكتيريا</h1>
                 <div className="flex items-center space-x-2 mb-6">
-                  <label className="text-sm font-medium text-gray-300">Select Pool:</label>
+                  <label className="text-sm font-medium text-gray-300">اختر الحوض:</label>
                   <SearchableSelect
                     value={selectedPool}
                     onValueChange={setSelectedPool}
                     options={poolOptions}
-                    placeholder="Select a pool..."
-                    searchPlaceholder="Search pools..."
+                    placeholder="اختر حوض..."
+                    searchPlaceholder="البحث عن الأحواض..."
                     className="w-64"
                   />
                 </div>
@@ -1647,9 +1669,9 @@ export default function DashboardPage() {
               {/* Test Control */}
               <Card className="mb-8 bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Start New Test</CardTitle>
+                  <CardTitle className="text-white">بدء فحص جديد</CardTitle>
                   <CardDescription className="text-gray-400">
-                    Run bacteria detection test for {getCurrentPoolName()}
+                    تشغيل فحص الكشف عن البكتيريا لـ {getCurrentPoolName()}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1663,18 +1685,18 @@ export default function DashboardPage() {
                       {bacteriaTestInProgress ? (
                         <>
                           <RefreshCw className="h-4 w-4 animate-spin" />
-                          <span>Testing in Progress...</span>
+                          <span>فحص قيد التقدم...</span>
                         </>
                       ) : (
                         <>
                           <Microscope className="h-4 w-4" />
-                          <span>Start Bacteria Test</span>
+                          <span>بدء فحص البكتيريا</span>
                         </>
                       )}
                     </Button>
                     {bacteriaTestInProgress && (
                       <div className="text-sm text-gray-400">
-                        Hardware is analyzing water sample. This may take a few minutes...
+                        الأجهزة تحلل عينة الماء. قد يستغرق هذا بضع دقائق...
                       </div>
                     )}
                   </div>
@@ -1684,16 +1706,16 @@ export default function DashboardPage() {
               {/* Test Results */}
               <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Recent Test Results</CardTitle>
+                  <CardTitle className="text-white">نتائج الفحص الأخيرة</CardTitle>
                   <CardDescription className="text-gray-400">
-                    Latest bacteria test results for {getCurrentPoolName()}
+                    أحدث نتائج فحص البكتيريا لـ {getCurrentPoolName()}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {bacteriaTestData
-                      .filter((test) => test.pool_id.toString() === selectedPool)
-                      .map((test) => (
+                      .filter((test: any) => test.pool_id.toString() === selectedPool)
+                      .map((test: any) => (
                         <div
                           key={test.id}
                           className="flex items-center justify-between p-4 rounded-lg border border-gray-600"
@@ -1773,8 +1795,8 @@ export default function DashboardPage() {
                 <CardContent>
                   <div className="space-y-6">
                     {settings
-                      .filter((setting) => setting.pool_id.toString() === selectedPool)
-                      .map((setting) => (
+                      .filter((setting: any) => setting.pool_id.toString() === selectedPool)
+                      .map((setting: any) => (
                         <div
                           key={setting.id}
                           className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border border-gray-600 rounded-lg bg-gray-700"
@@ -1793,8 +1815,8 @@ export default function DashboardPage() {
                               id={`min-${setting.id}`}
                               type="number"
                               value={setting.min_value}
-                              onChange={(e) => {
-                                const updatedSettings = settings.map((s) =>
+                              onChange={(e: any) => {
+                                const updatedSettings: any = settings.map((s: any) =>
                                   s.id === setting.id ? { ...s, min_value: Number.parseFloat(e.target.value) } : s,
                                 )
                                 setSettings(updatedSettings)
@@ -1810,8 +1832,8 @@ export default function DashboardPage() {
                               id={`max-${setting.id}`}
                               type="number"
                               value={setting.max_value}
-                              onChange={(e) => {
-                                const updatedSettings = settings.map((s) =>
+                              onChange={(e: any) => {
+                                const updatedSettings: any = settings.map((s: any) =>
                                   s.id === setting.id ? { ...s, max_value: Number.parseFloat(e.target.value) } : s,
                                 )
                                 setSettings(updatedSettings)
@@ -1827,8 +1849,8 @@ export default function DashboardPage() {
                               id={`target-${setting.id}`}
                               type="number"
                               value={setting.target_value}
-                              onChange={(e) => {
-                                const updatedSettings = settings.map((s) =>
+                              onChange={(e: any) => {
+                                const updatedSettings: any = settings.map((s: any) =>
                                   s.id === setting.id ? { ...s, target_value: Number.parseFloat(e.target.value) } : s,
                                 )
                                 setSettings(updatedSettings)
@@ -1855,12 +1877,12 @@ export default function DashboardPage() {
                         {isLoading ? (
                           <>
                             <RefreshCw className="h-4 w-4 animate-spin" />
-                            <span>Saving...</span>
+                            <span>جاري الحفظ...</span>
                           </>
                         ) : (
                           <>
                             <Save className="h-4 w-4" />
-                            <span>Save Settings</span>
+                            <span>حفظ الإعدادات</span>
                           </>
                         )}
                       </Button>
