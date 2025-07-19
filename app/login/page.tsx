@@ -202,9 +202,7 @@ export default function LoginPage() {
       width: "100%",
       zIndex: 50,
       transition: "all 0.3s ease",
-      backgroundColor: "#1a1a1a",
-      backdropFilter: "blur(12px)",
-      boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+      background: "transparent",
     },
     navContainer: {
       maxWidth: "1280px",
@@ -790,6 +788,7 @@ export default function LoginPage() {
       {/* Navigation Bar */}
       <nav style={styles.nav}>
         <div style={styles.navContainer}>
+          <div></div> {/* Empty div to push the button to the right */}
           <Link href="/signup" style={styles.navLogin} className="nav-login">
             Sign Up
           </Link>

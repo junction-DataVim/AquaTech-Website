@@ -18,6 +18,68 @@ import {
   CheckCircle,
 } from "lucide-react"
 
+// Footer Component (copied from login page)
+const Footer = () => {
+  const styles = {
+    footer: {
+      backgroundColor: "#1a1a1a",
+      borderTop: "1px solid #2d3748",
+      padding: "2rem 0",
+      marginTop: "auto",
+    },
+    footerContent: {
+      maxWidth: "1280px",
+      margin: "0 auto",
+      padding: "0 1rem",
+      display: "flex",
+      flexDirection: "column" as const,
+      alignItems: "center",
+      gap: "1rem",
+    },
+    logo: {
+      display: "flex",
+      alignItems: "center",
+    },
+    logoIcon: {
+      width: "32px",
+      height: "32px",
+      backgroundColor: "#00bcd4",
+      borderRadius: "50%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    logoText: {
+      marginLeft: "8px",
+      fontSize: "1rem",
+      fontWeight: "bold",
+      color: "white",
+    },
+    footerText: {
+      color: "#9ca3af",
+      textAlign: "center" as const,
+      fontSize: "0.875rem",
+    },
+  }
+
+  return (
+    <footer style={styles.footer}>
+      <div style={styles.footerContent}>
+        <div style={styles.logo}>
+          <div style={styles.logoIcon}>
+            <Fish size={20} color="#1a1a1a" />
+          </div>
+          <span style={styles.logoText}>AquaTech</span>
+        </div>
+        <div style={styles.footerText}>
+          <p>© 2025 AquaTech. All rights reserved.</p>
+          <p>Transforming aquaculture through innovation</p>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
 const countryCodes = [
   { code: "+1", country: "US", flag: "🇺🇸" },
   { code: "+213", country: "DZ", flag: "🇩🇿" },
@@ -240,9 +302,7 @@ export default function SignupPage() {
       width: "100%",
       zIndex: 50,
       transition: "all 0.3s ease",
-      backgroundColor: "#1a1a1a",
-      backdropFilter: "blur(12px)",
-      boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+      background: "transparent",
     },
     navContainer: {
       maxWidth: "1280px",
@@ -317,6 +377,7 @@ export default function SignupPage() {
       background:
         "linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)) padding-box, linear-gradient(135deg, #00bcd4, #00acc1, #0097a7) border-box",
       boxShadow: "0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 188, 212, 0.2)",
+      marginBottom: "2.5rem", // Added space below the card
     },
     logoContainer: {
       display: "flex",
@@ -539,23 +600,24 @@ export default function SignupPage() {
       color: "#d1d5db",
       marginBottom: "1rem",
     },
-    backArrow: {
+    backToHome: {
       position: "fixed" as const,
-      top: "16px",
-      left: "16px",
-      zIndex: 60, // Higher z-index than nav
-      backgroundColor: "rgba(0, 188, 212, 0.1)",
-      border: "2px solid #00bcd4",
-      borderRadius: "50%",
-      width: "40px",
-      height: "40px",
+      top: "20px",
+      left: "20px",
+      zIndex: 60000,
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
-      cursor: "pointer",
-      transition: "all 0.3s ease",
-      color: "white",
+      gap: "0.5rem",
+      backgroundColor: "rgba(0, 188, 212, 0.1)",
+      border: "2px solid #00bcd4",
+      borderRadius: "8px",
+      padding: "8px 12px",
+      color: "#00bcd4",
       textDecoration: "none",
+      fontSize: "0.875rem",
+      fontWeight: "500",
+      transition: "all 0.3s ease",
+      boxShadow: "0 0 20px rgba(0, 188, 212, 0.3)",
     },
     progressContainer: {
       marginBottom: "3rem",
@@ -686,9 +748,10 @@ export default function SignupPage() {
     .input-invalid {
       border-color: #ef4444 !important;
     }
-    .back-button:hover {
-      background-color: rgba(255, 255, 255, 0.2) !important;
-      transform: scale(1.1) !important;
+    .back-to-home:hover {
+      background-color: rgba(0, 188, 212, 0.2) !important;
+      transform: scale(1.05) !important;
+      box-shadow: 0 0 30px rgba(0, 188, 212, 0.5) !important;
     }
     .button:hover:not(:disabled) {
       transform: translateY(-2px) !important;
@@ -707,11 +770,6 @@ export default function SignupPage() {
     }
     .password-toggle:hover {
       color: white !important;
-    }
-    .back-arrow:hover {
-      background-color: rgba(0, 188, 212, 0.2) !important;
-      transform: scale(1.1) !important;
-      box-shadow: 0 0 20px rgba(0, 188, 212, 0.3) !important;
     }
     @keyframes pulse-glow {
       0%, 100% {
@@ -845,324 +903,333 @@ export default function SignupPage() {
   }
 
   return (
-    <div style={styles.container}>
-      <style>{mediaQueryStyles}</style>
-      <div style={styles.background}></div>
-      <div style={styles.overlay}></div>
-      {/* Floating Back Arrow */}
-      <Link href="/" style={styles.backArrow} className="back-arrow" aria-label="Back to Home">
-        <ArrowLeft size={24} color="#00bcd4" />
-      </Link>
-      {/* Navigation Bar */}
-      <nav style={styles.nav}>
-        <div style={styles.navContainer}>
-          <Link href="/login" style={styles.navLogin} className="nav-login">
-            Log In
-          </Link>
-        </div>
-      </nav>
-      <div style={styles.card}>
-        <div style={styles.logoContainer}>
-          <div style={styles.logoIcon}>
-            <Fish size={30} color="white" />
+    <div>
+      <div style={styles.container}>
+        <style>{mediaQueryStyles}</style>
+        <div style={styles.background}></div>
+        <div style={styles.overlay}></div>
+        {/* Floating Back Arrow */}
+        <Link href="/" style={styles.backToHome} className="back-to-home" aria-label="Back to Home">
+          <ArrowLeft size={16} />
+          Back to Home
+        </Link>
+        {/* Navigation Bar */}
+        <nav style={styles.nav}>
+          <div style={styles.navContainer}>
+            <div></div> {/* Empty div to push the button to the right */}
+            <Link href="/login" style={styles.navLogin} className="nav-login">
+              Log In
+            </Link>
           </div>
-          <span style={styles.logoText}>AquaTech</span>
-        </div>
-        <div style={styles.progressContainer}>
-          <div style={styles.stepperContainer}>
-            <div style={styles.stepperLine}>
-              <div style={styles.stepperProgress}></div>
+        </nav>
+        <div style={styles.card}>
+          <div style={styles.logoContainer}>
+            <div style={styles.logoIcon}>
+              <Fish size={30} color="white" />
             </div>
-            {["Info", "Security", "Verification"].map((step, index) => (
-              <div key={step} style={styles.stepWrapper}>
-                <div style={getStepCircleStyle(index)} className={index + 1 === currentStep ? "step-active" : ""}>
-                  {renderStepContent(index)}
-                </div>
-                <span style={getStepLabelStyle(index)}>{step}</span>
-              </div>
-            ))}
+            <span style={styles.logoText}>AquaTech</span>
           </div>
-        </div>
-        <h1 style={styles.title}>{getStepTitle()}</h1>
-        <p style={styles.subtitle}>{getStepSubtitle()}</p>
-        <form style={styles.form}>
-          {currentStep === 1 && (
-            <>
-              <div style={styles.inputGroup}>
-                <div style={styles.inputContainer}>
-                  <User size={20} style={styles.inputIcon} />
-                  <input
-                    type="text"
-                    value={formData.username}
-                    onChange={(e) => handleInputChange("username", e.target.value)}
-                    onFocus={() => setFocusedField("username")}
-                    onBlur={() => setFocusedField("")}
-                    style={styles.input}
-                    className={`${focusedField === "username" ? "input-focused" : ""} ${
-                      validation.username.isValid
-                        ? "input-valid"
-                        : formData.username && !validation.username.isValid
-                          ? "input-invalid"
-                          : ""
-                    }`}
-                  />
-                  <label
-                    style={{
-                      ...styles.floatingLabel,
-                      ...(focusedField === "username" || formData.username ? styles.floatingLabelActive : {}),
-                    }}
-                  >
-                    Username
-                  </label>
-                </div>
-                {formData.username && (
-                  <div
-                    style={{
-                      ...styles.validationMessage,
-                      color: validation.username.isValid ? "#22c55e" : "#ef4444",
-                    }}
-                  >
-                    {validation.username.isValid ? <Check size={16} /> : <X size={16} />}
-                    {validation.username.message}
-                  </div>
-                )}
+          <div style={styles.progressContainer}>
+            <div style={styles.stepperContainer}>
+              <div style={styles.stepperLine}>
+                <div style={styles.stepperProgress}></div>
               </div>
-              <div style={styles.inputGroup}>
-                <div style={styles.phoneContainer}>
-                  <select
-                    value={formData.countryCode}
-                    onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                    style={styles.countrySelect}
-                  >
-                    {countryCodes.map((country) => (
-                      <option key={country.code} value={country.code}>
-                        {country.flag} {country.code}
-                      </option>
-                    ))}
-                  </select>
+              {[
+                "Info",
+                "Security",
+                "Verification"
+              ].map((step, index) => (
+                <div key={step} style={styles.stepWrapper}>
+                  <div style={getStepCircleStyle(index)} className={index + 1 === currentStep ? "step-active" : ""}>
+                    {renderStepContent(index)}
+                  </div>
+                  <span style={getStepLabelStyle(index)}>{step}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <h1 style={styles.title}>{getStepTitle()}</h1>
+          <p style={styles.subtitle}>{getStepSubtitle()}</p>
+          <form style={styles.form}>
+            {currentStep === 1 && (
+              <>
+                <div style={styles.inputGroup}>
                   <div style={styles.inputContainer}>
-                    <Phone size={20} style={styles.inputIcon} />
+                    <User size={20} style={styles.inputIcon} />
                     <input
-                      type="tel"
-                      value={formData.phoneNumber}
-                      onChange={(e) => {
-                        const formatted = formatPhoneNumber(e.target.value)
-                        handleInputChange("phoneNumber", formatted)
-                      }}
-                      onFocus={() => setFocusedField("phoneNumber")}
+                      type="text"
+                      value={formData.username}
+                      onChange={(e) => handleInputChange("username", e.target.value)}
+                      onFocus={() => setFocusedField("username")}
                       onBlur={() => setFocusedField("")}
-                      style={styles.phoneInput}
-                      className={`${focusedField === "phoneNumber" ? "input-focused" : ""} ${
-                        validation.phoneNumber.isValid
+                      style={styles.input}
+                      className={`${focusedField === "username" ? "input-focused" : ""} ${
+                        validation.username.isValid
                           ? "input-valid"
-                          : formData.phoneNumber && !validation.phoneNumber.isValid
+                          : formData.username && !validation.username.isValid
                             ? "input-invalid"
                             : ""
                       }`}
-                      placeholder="123-456-7890"
                     />
+                    <label
+                      style={{
+                        ...styles.floatingLabel,
+                        ...(focusedField === "username" || formData.username ? styles.floatingLabelActive : {}),
+                      }}
+                    >
+                      Username
+                    </label>
                   </div>
-                </div>
-                {formData.phoneNumber && (
-                  <div
-                    style={{
-                      ...styles.validationMessage,
-                      color: validation.phoneNumber.isValid ? "#22c55e" : "#ef4444",
-                    }}
-                  >
-                    {validation.phoneNumber.isValid ? <Check size={16} /> : <X size={16} />}
-                    {validation.phoneNumber.message}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-          {currentStep === 2 && (
-            <>
-              <div style={styles.inputGroup}>
-                <div style={styles.inputContainer}>
-                  <Lock size={20} style={styles.inputIcon} />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
-                    onFocus={() => setFocusedField("password")}
-                    onBlur={() => setFocusedField("")}
-                    style={styles.input}
-                    className={`${focusedField === "password" ? "input-focused" : ""} ${
-                      validation.password.isValid
-                        ? "input-valid"
-                        : formData.password && !validation.password.isValid
-                          ? "input-invalid"
-                          : ""
-                    }`}
-                  />
-                  <label
-                    style={{
-                      ...styles.floatingLabel,
-                      ...(focusedField === "password" || formData.password ? styles.floatingLabelActive : {}),
-                    }}
-                  >
-                    Password
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={styles.passwordToggle}
-                    className="password-toggle"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {formData.password && (
-                  <>
-                    <div style={styles.strengthMeter}>
-                      <div style={styles.strengthBar}>
-                        <div
-                          style={{
-                            ...styles.strengthFill,
-                            width: `${validation.password.strength}%`,
-                            backgroundColor: getPasswordStrengthColor(validation.password.strength),
-                          }}
-                        ></div>
-                      </div>
-                      <div
-                        style={{
-                          ...styles.strengthText,
-                          color: getPasswordStrengthColor(validation.password.strength),
-                        }}
-                      >
-                        {getPasswordStrengthText(validation.password.strength)}
-                      </div>
-                    </div>
+                  {formData.username && (
                     <div
                       style={{
                         ...styles.validationMessage,
-                        color: validation.password.isValid ? "#22c55e" : "#ef4444",
+                        color: validation.username.isValid ? "#22c55e" : "#ef4444",
                       }}
                     >
-                      {validation.password.isValid ? <Check size={16} /> : <X size={16} />}
-                      {validation.password.message}
+                      {validation.username.isValid ? <Check size={16} /> : <X size={16} />}
+                      {validation.username.message}
                     </div>
-                  </>
-                )}
-              </div>
-              <div style={styles.inputGroup}>
-                <div style={styles.inputContainer}>
-                  <Lock size={20} style={styles.inputIcon} />
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                    onFocus={() => setFocusedField("confirmPassword")}
-                    onBlur={() => setFocusedField("")}
-                    style={styles.input}
-                    className={`${focusedField === "confirmPassword" ? "input-focused" : ""} ${
-                      validation.confirmPassword.isValid
-                        ? "input-valid"
-                        : formData.confirmPassword && !validation.confirmPassword.isValid
-                          ? "input-invalid"
-                          : ""
-                    }`}
-                  />
-                  <label
-                    style={{
-                      ...styles.floatingLabel,
-                      ...(focusedField === "confirmPassword" || formData.confirmPassword
-                        ? styles.floatingLabelActive
-                        : {}),
-                    }}
-                  >
-                    Confirm Password
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    style={styles.passwordToggle}
-                    className="password-toggle"
-                  >
-                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
+                  )}
                 </div>
-                {formData.confirmPassword && (
+                <div style={styles.inputGroup}>
+                  <div style={styles.phoneContainer}>
+                    <select
+                      value={formData.countryCode}
+                      onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
+                      style={styles.countrySelect}
+                    >
+                      {countryCodes.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.flag} {country.code}
+                        </option>
+                      ))}
+                    </select>
+                    <div style={styles.inputContainer}>
+                      <Phone size={20} style={styles.inputIcon} />
+                      <input
+                        type="tel"
+                        value={formData.phoneNumber}
+                        onChange={(e) => {
+                          const formatted = formatPhoneNumber(e.target.value)
+                          handleInputChange("phoneNumber", formatted)
+                        }}
+                        onFocus={() => setFocusedField("phoneNumber")}
+                        onBlur={() => setFocusedField("")}
+                        style={styles.phoneInput}
+                        className={`${focusedField === "phoneNumber" ? "input-focused" : ""} ${
+                          validation.phoneNumber.isValid
+                            ? "input-valid"
+                            : formData.phoneNumber && !validation.phoneNumber.isValid
+                              ? "input-invalid"
+                              : ""
+                        }`}
+                        placeholder="Phone Number"
+                      />
+                    </div>
+                  </div>
+                  {formData.phoneNumber && (
+                    <div
+                      style={{
+                        ...styles.validationMessage,
+                        color: validation.phoneNumber.isValid ? "#22c55e" : "#ef4444",
+                      }}
+                    >
+                      {validation.phoneNumber.isValid ? <Check size={16} /> : <X size={16} />}
+                      {validation.phoneNumber.message}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+            {currentStep === 2 && (
+              <>
+                <div style={styles.inputGroup}>
+                  <div style={styles.inputContainer}>
+                    <Lock size={20} style={styles.inputIcon} />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) => handleInputChange("password", e.target.value)}
+                      onFocus={() => setFocusedField("password")}
+                      onBlur={() => setFocusedField("")}
+                      style={styles.input}
+                      className={`${focusedField === "password" ? "input-focused" : ""} ${
+                        validation.password.isValid
+                          ? "input-valid"
+                          : formData.password && !validation.password.isValid
+                            ? "input-invalid"
+                            : ""
+                      }`}
+                    />
+                    <label
+                      style={{
+                        ...styles.floatingLabel,
+                        ...(focusedField === "password" || formData.password ? styles.floatingLabelActive : {}),
+                      }}
+                    >
+                      Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={styles.passwordToggle}
+                      className="password-toggle"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                  {formData.password && (
+                    <>
+                      <div style={styles.strengthMeter}>
+                        <div style={styles.strengthBar}>
+                          <div
+                            style={{
+                              ...styles.strengthFill,
+                              width: `${validation.password.strength}%`,
+                              backgroundColor: getPasswordStrengthColor(validation.password.strength),
+                            }}
+                          ></div>
+                        </div>
+                        <div
+                          style={{
+                            ...styles.strengthText,
+                            color: getPasswordStrengthColor(validation.password.strength),
+                          }}
+                        >
+                          {getPasswordStrengthText(validation.password.strength)}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          ...styles.validationMessage,
+                          color: validation.password.isValid ? "#22c55e" : "#ef4444",
+                        }}
+                      >
+                        {validation.password.isValid ? <Check size={16} /> : <X size={16} />}
+                        {validation.password.message}
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div style={styles.inputGroup}>
+                  <div style={styles.inputContainer}>
+                    <Lock size={20} style={styles.inputIcon} />
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={formData.confirmPassword}
+                      onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                      onFocus={() => setFocusedField("confirmPassword")}
+                      onBlur={() => setFocusedField("")}
+                      style={styles.input}
+                      className={`${focusedField === "confirmPassword" ? "input-focused" : ""} ${
+                        validation.confirmPassword.isValid
+                          ? "input-valid"
+                          : formData.confirmPassword && !validation.confirmPassword.isValid
+                            ? "input-invalid"
+                            : ""
+                      }`}
+                    />
+                    <label
+                      style={{
+                        ...styles.floatingLabel,
+                        ...(focusedField === "confirmPassword" || formData.confirmPassword
+                          ? styles.floatingLabelActive
+                          : {}),
+                      }}
+                    >
+                      Confirm Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      style={styles.passwordToggle}
+                      className="password-toggle"
+                    >
+                      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                  {formData.confirmPassword && (
+                    <div
+                      style={{
+                        ...styles.validationMessage,
+                        color: validation.confirmPassword.isValid ? "#22c55e" : "#ef4444",
+                      }}
+                    >
+                      {validation.confirmPassword.isValid ? <Check size={16} /> : <X size={16} />}
+                      {validation.confirmPassword.message}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+            {currentStep === 3 && (
+              <>
+                <div style={styles.smsContainer}>
+                  {formData.smsCode.map((digit, index) => (
+                    <input
+                      key={index}
+                      ref={(el) => (smsInputRefs.current[index] = el)}
+                      type="text"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleSmsCodeChange(index, e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Backspace" && !digit && index > 0) {
+                          smsInputRefs.current[index - 1]?.focus()
+                        }
+                      }}
+                      style={styles.smsInput}
+                      className="sms-input"
+                    />
+                  ))}
+                </div>
+                <div style={styles.resendContainer}>
+                  {smsTimer > 0 ? (
+                    <span style={styles.timerText}>Resend code in {smsTimer}s</span>
+                  ) : (
+                    <button type="button" onClick={sendSmsCode} style={styles.resendButton} className="resend-button">
+                      <RefreshCw size={16} style={{ marginRight: "0.5rem" }} />
+                      Resend Code
+                    </button>
+                  )}
+                </div>
+                {validation.smsCode.message && (
                   <div
                     style={{
                       ...styles.validationMessage,
-                      color: validation.confirmPassword.isValid ? "#22c55e" : "#ef4444",
+                      color: validation.smsCode.isValid ? "#22c55e" : "#ef4444",
+                      justifyContent: "center",
                     }}
                   >
-                    {validation.confirmPassword.isValid ? <Check size={16} /> : <X size={16} />}
-                    {validation.confirmPassword.message}
+                    {validation.smsCode.isValid ? <Check size={16} /> : <Smartphone size={16} />}
+                    {validation.smsCode.message}
                   </div>
                 )}
-              </div>
-            </>
-          )}
-          {currentStep === 3 && (
-            <>
-              <div style={styles.smsContainer}>
-                {formData.smsCode.map((digit, index) => (
-                  <input
-                    key={index}
-                    ref={(el) => (smsInputRefs.current[index] = el)}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleSmsCodeChange(index, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && !digit && index > 0) {
-                        smsInputRefs.current[index - 1]?.focus()
-                      }
-                    }}
-                    style={styles.smsInput}
-                    className="sms-input"
-                  />
-                ))}
-              </div>
-              <div style={styles.resendContainer}>
-                {smsTimer > 0 ? (
-                  <span style={styles.timerText}>Resend code in {smsTimer}s</span>
-                ) : (
-                  <button type="button" onClick={sendSmsCode} style={styles.resendButton} className="resend-button">
-                    <RefreshCw size={16} style={{ marginRight: "0.5rem" }} />
-                    Resend Code
-                  </button>
-                )}
-              </div>
-              {validation.smsCode.message && (
-                <div
-                  style={{
-                    ...styles.validationMessage,
-                    color: validation.smsCode.isValid ? "#22c55e" : "#ef4444",
-                    justifyContent: "center",
-                  }}
-                >
-                  {validation.smsCode.isValid ? <Check size={16} /> : <Smartphone size={16} />}
-                  {validation.smsCode.message}
-                </div>
-              )}
-            </>
-          )}
-          <button
-            type="button"
-            onClick={() => {
-              if (currentStep === 1 && canProceedStep1) nextStep()
-              else if (currentStep === 2 && canProceedStep2) nextStep()
-              else if (currentStep === 3 && canProceedStep3) completeSignup()
-            }}
-            disabled={
-              isLoading ||
-              (currentStep === 1 && !canProceedStep1) ||
-              (currentStep === 2 && !canProceedStep2) ||
-              (currentStep === 3 && !canProceedStep3)
-            }
-            style={styles.button}
-            className="button"
-          >
-            {isLoading ? <div style={styles.loadingSpinner}></div> : currentStep === 3 ? "Complete Signup" : "Continue"}
-          </button>
-        </form>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                if (currentStep === 1 && canProceedStep1) nextStep()
+                else if (currentStep === 2 && canProceedStep2) nextStep()
+                else if (currentStep === 3 && canProceedStep3) completeSignup()
+              }}
+              disabled={
+                isLoading ||
+                (currentStep === 1 && !canProceedStep1) ||
+                (currentStep === 2 && !canProceedStep2) ||
+                (currentStep === 3 && !canProceedStep3)
+              }
+              style={styles.button}
+              className="button"
+            >
+              {isLoading ? <div style={styles.loadingSpinner}></div> : currentStep === 3 ? "Complete Signup" : "Continue"}
+            </button>
+          </form>
+        </div>
       </div>
+      <Footer />
     </div>
   )
 }
