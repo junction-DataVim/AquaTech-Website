@@ -369,7 +369,7 @@ export default function SignupPage() {
       borderRadius: "24px",
       padding: "3rem",
       width: "100%",
-      maxWidth: "450px",
+      maxWidth: "520px",
       margin: "80px 1rem 0 1rem",
       position: "relative" as const,
       zIndex: 5,
@@ -467,6 +467,7 @@ export default function SignupPage() {
     phoneContainer: {
       display: "flex",
       gap: "0.5rem",
+      width: "100%",
     },
     countrySelect: {
       backgroundColor: "rgba(45, 55, 72, 0.8)",
@@ -994,19 +995,17 @@ export default function SignupPage() {
                 </div>
                 <div style={styles.inputGroup}>
                   <div style={styles.phoneContainer}>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      background: '#232323',
-                      borderRadius: '8px 0 0 8px',
-                      padding: '0 12px',
-                      fontSize: '1rem',
-                      height: '48px',
-                      border: '1px solid #333',
-                      borderRight: 'none',
-                    }}>
-                      <span role="img" aria-label="Algeria flag">🇩🇿</span> +213
-                    </div>
+                    <select
+                      value={formData.countryCode}
+                      onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
+                      style={styles.countrySelect}
+                    >
+                      {countryCodes.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.flag} {country.code}
+                        </option>
+                      ))}
+                    </select>
                     <div style={styles.inputContainer}>
                       <Phone size={20} style={styles.inputIcon} />
                       <input
@@ -1171,7 +1170,7 @@ export default function SignupPage() {
                   {formData.smsCode.map((digit, index) => (
                     <input
                       key={index}
-                      ref={(el) => (smsInputRefs.current[index] = el)}
+                      ref={(el) => { smsInputRefs.current[index] = el }}
                       type="text"
                       maxLength={1}
                       value={digit}

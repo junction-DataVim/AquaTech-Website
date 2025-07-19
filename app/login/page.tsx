@@ -280,7 +280,7 @@ export default function LoginPage() {
       borderRadius: "24px",
       padding: "3rem",
       width: "100%",
-      maxWidth: "450px",
+      maxWidth: "520px",
       position: "relative" as const,
       zIndex: 5,
       border: "2px solid transparent",
