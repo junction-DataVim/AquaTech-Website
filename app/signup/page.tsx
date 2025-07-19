@@ -994,17 +994,19 @@ export default function SignupPage() {
                 </div>
                 <div style={styles.inputGroup}>
                   <div style={styles.phoneContainer}>
-                    <select
-                      value={formData.countryCode}
-                      onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                      style={styles.countrySelect}
-                    >
-                      {countryCodes.map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {country.flag} {country.code}
-                        </option>
-                      ))}
-                    </select>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      background: '#232323',
+                      borderRadius: '8px 0 0 8px',
+                      padding: '0 12px',
+                      fontSize: '1rem',
+                      height: '48px',
+                      border: '1px solid #333',
+                      borderRight: 'none',
+                    }}>
+                      <span role="img" aria-label="Algeria flag">🇩🇿</span> +213
+                    </div>
                     <div style={styles.inputContainer}>
                       <Phone size={20} style={styles.inputIcon} />
                       <input
